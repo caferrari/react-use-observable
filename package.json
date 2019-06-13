@@ -1,9 +1,9 @@
 {
   "name": "react-use-observable",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Use rxjs observables with react hooks",
   "main": "dist/index.js",
-  "types": "index.d.ts",
+  "types": "dist/index.d.ts",
   "author": "Carlos André Ferrari",
   "homepage": "https://github.com/caferrari/react-use-observable",
   "license": "MIT",
@@ -27,5 +27,8 @@
     "react-dom": "^16.8",
     "rxjs": "^6",
     "typescript": "^3.5.1"
+  },
+  "dependencies": {
+    "react-use-observable": "^0.0.2"
   }
 }
