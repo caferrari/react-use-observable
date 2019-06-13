@@ -1,6 +1,6 @@
 {
   "name": "react-use-observable",
-  "version": "0.0.5",
+  "version": "0.0.8",
   "description": "Use rxjs observables with react hooks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,7 +22,6 @@
     "react-dom": "^16.8"
   },
   "devDependencies": {
-    "@types/lodash.isequal": "*",
     "@types/react": "^16.8",
     "react": "^16.8",
     "react-dom": "^16.8",
