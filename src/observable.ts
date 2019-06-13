@@ -1,6 +1,7 @@
 import { DependencyList, useCallback, useEffect, useState } from 'react';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
+import isEqual from 'lodash.isequal';
 
 type observerFunction<T> = () => Observable<T>
 
@@ -18,7 +19,7 @@ export function useObservable<T>(
   useEffect(() => {
     const sub = cb()
       .pipe(
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => isEqual(a, b))
       )
       .subscribe(
         (data: T) => {
