@@ -1,7 +1,7 @@
 import { DependencyList, useCallback, useEffect, useState } from 'react';
 import { Observable } from 'rxjs';
 
-type observerFunction<T> = () => Observable<T>
+export type observerFunction<T> = () => Observable<T>
 
 export function useObservable<T>(
   observableGenerator: observerFunction<T>,

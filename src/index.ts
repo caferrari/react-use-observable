@@ -1,2 +1,3 @@
 
-export * from './observable';
+export { useObservable } from './observable';
+export { useMappedObservable } from './mappedObservable';
