@@ -6,15 +6,21 @@ export type observerFunction<T> = () => Observable<T>
 export function useObservable<T>(
   observableGenerator: observerFunction<T>,
   deps: DependencyList
-): [T | undefined, any, boolean] {
+): [T | undefined, any, boolean, () => void] {
 
   const [value, setValue] = useState<T>();
   const [error, setError] = useState();
+  const [retryCounter, setRetryCounter] = useState(0);
   const [complete, setComplete] = useState<boolean>(false);
 
-  const cb = useCallback(observableGenerator, deps)
+  const cb = useCallback(observableGenerator, [...deps, retryCounter]);
+  const retry = useCallback(() => setRetryCounter(retryCounter + 1), [retryCounter]);
 
   useEffect(() => {
+    setValue(undefined);
+    setError(undefined);
+    setComplete(false);
+
     const sub = cb()
       .subscribe(
         (data: T) => {
@@ -30,5 +36,5 @@ export function useObservable<T>(
     return () => sub.unsubscribe();
   }, [cb]);
 
-  return [value, error, complete];
+  return [value, error, complete, retry];
 }

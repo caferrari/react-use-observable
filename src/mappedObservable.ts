@@ -1,12 +1,13 @@
 import { DependencyList, useCallback } from 'react';
-import { map, distinctUntilChanged } from 'rxjs/operators';
-import { useObservable, observerFunction } from './observable';
+import { distinctUntilChanged, map } from 'rxjs/operators';
+
+import { observerFunction, useObservable } from './observable';
 
 export function useMappedObservable<T, W>(
   observableGenerator: observerFunction<T>,
   mapperFunction: (data: T) => W,
   deps: DependencyList
-): [W | undefined, any, boolean] {
+): [W | undefined, any, boolean, () => void] {
 
   const newGenerator = useCallback(() => {
     return observableGenerator().pipe(
