@@ -1,0 +1,40 @@
+{
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": false,
+  "editor.formatOnType": false,
+  "eslint.enable": true,
+  "eslint.autoFixOnSave": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    {
+      "autoFix": true,
+      "language": "typescript"
+    },
+    {
+      "autoFix": true,
+      "language": "typescriptreact"
+    }
+  ],
+  "files.associations": {
+    ".env*": "properties",
+    "apple-app-site-association": "json",
+    "Fastfile": "ruby",
+    "Podfile": "ruby",
+    ".prettierrc": "json",
+    "*.js": "javascriptreact"
+  },
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.directory": true,
+    "**/.git": true,
+    "**/.hg": true,
+    "**/.svn": true,
+    "**/CVS": true,
+    "*.apk": true,
+    "*.zip": true,
+    "node_modules": false
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescriptHero.imports.organizeOnSave": true
+}
