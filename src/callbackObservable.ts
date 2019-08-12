@@ -11,12 +11,14 @@ import { useObservable } from './observable';
 export function useCallbackObservable<T extends (...args: any[]) => Observable<any>>(
   observableGenerator: T,
   deps: DependencyList
-): () => void {
+): [() => void, T | undefined, any, boolean] {
   const submitted$ = useRef(new Subject<any>()).current;
 
-  useObservable(() => {
+  const result = useObservable(() => {
     return submitted$.pipe(switchMap(args => observableGenerator(...args)));
   }, deps);
 
-  return useCallback((...args: any[]) => submitted$.next(args), [submitted$]);
+  const callback = useCallback((...args: any[]) => submitted$.next(args), [submitted$]);
+
+  return [callback, ...result] as [typeof callback, T | undefined, any, boolean];
 }
