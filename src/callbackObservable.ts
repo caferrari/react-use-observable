@@ -17,11 +17,14 @@ export function useCallbackObservable<T extends (...args: any[]) => Observable<a
 
   const [data, , completed] = useObservable(() => {
     return submitted$.pipe(
-      switchMap(args => observableGenerator(...args)),
-      catchError(err => {
-        setError(err);
-        return never();
-      })
+      switchMap(args =>
+        observableGenerator(...args).pipe(
+          catchError(err => {
+            setError(err);
+            return never();
+          })
+        )
+      )
     );
   }, deps);
 
