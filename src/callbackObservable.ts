@@ -1,5 +1,6 @@
 import { DependencyList, useCallback, useRef, useState } from 'react';
-import { never, Observable } from 'rxjs';
+import { never, Observable, Subject } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 
 import { useObservable } from './observable';
 
@@ -11,14 +12,20 @@ export function useCallbackObservable<T extends (...args: any[]) => Observable<a
   observableGenerator: T,
   deps: DependencyList
 ): [() => void, T | undefined, any, boolean] {
-  const [submitArgs, setSubmitArgs] = useState<any[]>();
+  const [error, setError] = useState();
+  const submitted$ = useRef(new Subject<any>()).current;
 
-  const result = useObservable(() => {
-    if (submitArgs === undefined) return never();
-    return observableGenerator(submitArgs);
-  }, [...deps, submitArgs]);
+  const [data, , completed] = useObservable(() => {
+    return submitted$.pipe(
+      switchMap(args => observableGenerator(...args)),
+      catchError(err => {
+        setError(err);
+        return never();
+      })
+    );
+  }, deps);
 
-  const callback = useCallback((...args: any[]) => setSubmitArgs([...args]), []);
+  const callback = useCallback((...args: any[]) => submitted$.next(args), [submitted$]);
 
-  return [callback, ...result] as [typeof callback, T | undefined, any, boolean];
+  return [callback, data, error, completed] as [typeof callback, T | undefined, any, boolean];
 }
