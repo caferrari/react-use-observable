@@ -1,6 +1,6 @@
 import { DependencyList, useCallback, useRef, useState } from 'react';
 import { never, Observable, Subject } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 
 import { useObservable } from './observable';
 
@@ -17,6 +17,7 @@ export function useCallbackObservable<T extends (...args: any[]) => Observable<a
 
   const [data, , completed] = useObservable(() => {
     return submitted$.pipe(
+      tap(() => setError(undefined)),
       switchMap(args =>
         observableGenerator(...args).pipe(
           catchError(err => {

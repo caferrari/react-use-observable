@@ -1,4 +1,6 @@
-import { DependencyList, useCallback, useState } from 'react';
+import { DependencyList, useCallback, useRef, useState } from 'react';
+import { BehaviorSubject, never } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 
 import { observerFunction, useObservable } from './observable';
 
@@ -11,10 +13,27 @@ export function useRetryableObservable<T, W>(
   observableGenerator: observerFunction<T>,
   deps: DependencyList
 ): [W | undefined, any, boolean, () => void] {
-  const [retryCounter, setRetryCounter] = useState(0);
-  const retry = useCallback(() => setRetryCounter(retryCounter + 1), [retryCounter]);
+  const [data, setData] = useState();
+  const [error, setError] = useState();
+  const submitted$ = useRef(new BehaviorSubject<boolean>(true)).current;
 
-  const result = useObservable(observableGenerator, [...deps, retryCounter]);
+  const [, , completed] = useObservable(() => {
+    return submitted$.pipe(
+      tap(() => setData(undefined)),
+      tap(() => setError(undefined)),
+      switchMap(() =>
+        observableGenerator().pipe(
+          tap(result => setData(result)),
+          catchError(err => {
+            setError(err);
+            return never();
+          })
+        )
+      )
+    );
+  }, deps);
 
-  return [...result, retry] as any;
+  const retry = useCallback(() => submitted$.next(true), [submitted$]);
+
+  return [data, error, completed, retry] as [W | undefined, any, boolean, typeof retry];
 }
