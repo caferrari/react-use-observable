@@ -1,6 +1,6 @@
 {
   "name": "react-use-observable",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Use rxjs observables with react hooks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,18 +25,18 @@
   },
   "devDependencies": {
     "@types/react": "^16.8",
-    "@typescript-eslint/eslint-plugin": "^1.13.0",
-    "@typescript-eslint/parser": "^1.13.0",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.3",
-    "eslint-plugin-react-hooks": "^1.6.1",
+    "eslint-plugin-react-hooks": "^1.7.0",
     "prettier": "^1.18.2",
     "react": "^16.8",
     "react-dom": "^16.8",
     "rxjs": "^6",
-    "typescript": "^3.5.1"
+    "typescript": "^3.5.3"
   },
   "keywords": [
     "react",
