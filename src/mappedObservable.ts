@@ -12,7 +12,7 @@ export function useMappedObservable<T, W>(
   observableGenerator: observerFunction<T>,
   mapperFunction: (data: T) => W,
   deps: DependencyList
-): [W | undefined, any, boolean] {
+): [W | undefined, any, boolean, undefined] {
   const newGenerator = useCallback(() => {
     return observableGenerator().pipe(
       map(mapperFunction),

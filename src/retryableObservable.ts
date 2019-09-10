@@ -12,7 +12,7 @@ import { observerFunction, useObservable } from './observable';
 export function useRetryableObservable<T>(
   observableGenerator: observerFunction<T>,
   deps: DependencyList
-): [T | undefined, any, boolean, () => void] {
+): [T | undefined, any, boolean, () => void, undefined] {
   const [data, setData] = useState();
   const [error, setError] = useState();
   const submitted$ = useRef(new BehaviorSubject<boolean>(true)).current;
@@ -35,5 +35,5 @@ export function useRetryableObservable<T>(
 
   const retry = useCallback(() => submitted$.next(true), [submitted$]);
 
-  return [data, error, completed, retry] as [T | undefined, any, boolean, typeof retry];
+  return [data, error, completed, retry, undefined];
 }

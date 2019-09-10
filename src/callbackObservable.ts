@@ -11,7 +11,7 @@ import { useObservable } from './observable';
 export function useCallbackObservable<T extends (...args: any[]) => Observable<any>>(
   observableGenerator: T,
   deps: DependencyList
-): [() => void, T | undefined, any, boolean] {
+): [() => void, T | undefined, any, boolean, undefined] {
   const [error, setError] = useState();
   const submitted$ = useRef(new Subject<any>()).current;
 
@@ -31,5 +31,5 @@ export function useCallbackObservable<T extends (...args: any[]) => Observable<a
 
   const callback = useCallback((...args: any[]) => submitted$.next(args), [submitted$]);
 
-  return [callback, data, error, completed] as [typeof callback, T | undefined, any, boolean];
+  return [callback, data, error, completed, undefined];
 }
