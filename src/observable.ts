@@ -10,7 +10,7 @@ export type observerFunction<T> = () => Observable<T>;
 export function useObservable<T>(
   observableGenerator: observerFunction<T>,
   deps: DependencyList
-): [T | undefined, any, boolean] {
+): [T | undefined, any, boolean, undefined] {
   const [value, setValue] = useState<T>();
   const [error, setError] = useState();
   const [complete, setComplete] = useState<boolean>(false);
@@ -36,5 +36,5 @@ export function useObservable<T>(
     return () => sub.unsubscribe();
   }, [cb]);
 
-  return [value, error, complete];
+  return [value, error, complete, undefined];
 }
