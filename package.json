@@ -1,6 +1,6 @@
 {
   "name": "react-use-observable",
-  "version": "0.0.11",
+  "version": "1.0.0",
   "description": "Use rxjs observables with react hooks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
