@@ -1,5 +1,5 @@
-import { DependencyList, useCallback } from 'react';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { DependencyList, useCallback, useRef } from 'react';
+import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 import { observerFunction, useObservable } from './observable';
 
@@ -11,15 +11,18 @@ import { observerFunction, useObservable } from './observable';
 export function useMappedObservable<T, W>(
   observableGenerator: observerFunction<T>,
   mapperFunction: (data: T) => W,
-  deps: DependencyList
-): [W | undefined, any, boolean, undefined] {
+  deps: DependencyList,
+  defaultValue: W | null = null
+): [W | null, any, boolean, undefined] {
+  const mapper = useRef(mapperFunction);
+
   const newGenerator = useCallback(() => {
     return observableGenerator().pipe(
-      map(mapperFunction),
+      filter(value => !!value),
+      map(mapper.current),
       distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [observableGenerator]);
 
-  return useObservable(newGenerator, deps);
+  return useObservable(newGenerator, deps, defaultValue);
 }
