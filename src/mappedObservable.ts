@@ -14,15 +14,15 @@ export function useMappedObservable<T, W>(
   deps: DependencyList,
   defaultValue: W | null = null
 ): [W | null, any, boolean, undefined] {
-  const mapper = useRef(mapperFunction);
+  const mapper = useCallback(mapperFunction, deps);
 
   const newGenerator = useCallback(() => {
     return observableGenerator().pipe(
       filter(value => !!value),
-      map(mapper.current),
+      map(mapper),
       distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
     );
-  }, [observableGenerator]);
+  }, [observableGenerator, mapper]);
 
   return useObservable(newGenerator, deps, defaultValue);
 }

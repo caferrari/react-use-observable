@@ -13,7 +13,7 @@ export function useRetryableObservable<T>(
   observableGenerator: observerFunction<T>,
   deps: DependencyList
 ): [T | undefined, any, boolean, () => void, undefined] {
-  const [data, setData] = useState();
+  const [data, setData] = useState<T | undefined>();
   const [error, setError] = useState();
   const submitted$ = useRef(new BehaviorSubject<boolean>(true)).current;
 
