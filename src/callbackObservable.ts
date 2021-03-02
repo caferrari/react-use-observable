@@ -8,10 +8,10 @@ import { useObservable } from './observable';
  * Create a memoized callback that uses an observable and unsubscribe automatically if component unmount
  * @returns a memoized version of the callback that only changes if one of the inputs has changed
  */
-export function useCallbackObservable<T extends (...args: any[]) => Observable<any>>(
-  observableGenerator: T,
+export function useCallbackObservable<T>(
+  observableGenerator: (...args: any[]) => Observable<T>,
   deps: DependencyList
-): [() => void, T | undefined, any, boolean, undefined] {
+): [() => void, T | null, any, boolean, undefined] {
   const [error, setError] = useState();
   const submitted$ = useRef(new Subject<any>()).current;
 
