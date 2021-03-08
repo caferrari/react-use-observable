@@ -11,7 +11,7 @@ import { useObservable } from './observable';
 export function useCallbackObservable<T>(
   observableGenerator: (...args: any[]) => Observable<T>,
   deps: DependencyList
-): [() => void, T | null, any, boolean, undefined] {
+): [() => void, T | undefined, any, boolean, undefined] {
   const [error, setError] = useState();
   const submitted$ = useRef(new Subject<any>()).current;
 
