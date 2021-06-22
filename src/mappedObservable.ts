@@ -13,7 +13,7 @@ export function useMappedObservable<T, W>(
   mapperFunction: (data: T) => W,
   deps: DependencyList,
   defaultValue: W | null = null
-): [W | null, any, boolean, undefined] {
+): [W | null, any, boolean] {
   const mapper = useCallback(mapperFunction, deps);
 
   const newGenerator = useCallback(() => {
