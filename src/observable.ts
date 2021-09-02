@@ -11,21 +11,16 @@ export function useObservable<T>(
   observableGenerator: observerFunction<T>,
   deps: DependencyList,
   defaultValue: T | null = null
-): [T | null, any, boolean, undefined] {
+): [T | null, any, boolean] {
   const [value, setValue] = useState<T | null>(null);
   const [error, setError] = useState();
   const [complete, setComplete] = useState<boolean>(false);
 
-  const defaultValueRef = useRef(defaultValue);
-
   const cb = useCallback(observableGenerator, deps);
 
   useEffect(() => {
-    setValue(defaultValueRef.current || null);
     setError(undefined);
     setComplete(false);
-
-    defaultValueRef.current = null;
 
     const sub = cb().subscribe(
       (data: T) => {
@@ -39,7 +34,7 @@ export function useObservable<T>(
       () => setComplete(true)
     );
     return () => sub.unsubscribe();
-  }, [cb, defaultValue]);
+  }, [cb]);
 
-  return [value, error, complete, undefined];
+  return [value === null ? defaultValue : value, error, complete];
 }
